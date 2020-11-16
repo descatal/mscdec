@@ -568,10 +568,11 @@ class MscFile:
                 end = endOfScripts
             newScript = MscScript()
             #Change this for stage BABB's
-            if i == 0:
-                newScript.name = 'main'
-            else:
-                newScript.name = 'func_%i' % i
+            #if i == 0:
+            #    newScript.name = 'main'
+            #else:
+            #    newScript.name = 'func_%i' % i
+            newScript.name = 'func_%i' % i
             newScript.read(f, start, end)
             self.scripts.append(newScript)
         return self
