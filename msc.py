@@ -486,6 +486,7 @@ class MscScript:
         return s
 
 def readInt(f, endian):
+    endian = ">"
     try:
         return struct.unpack(endian+'L', f.read(4))[0]
     except struct.error as e:
@@ -548,6 +549,12 @@ class MscFile:
             scriptOffsets.append(readInt(f, headerEndianess) + 0x30)
         sortedScriptOffsets = scriptOffsets
         sortedScriptOffsets.sort()
+        count = 0
+        for i in sortedScriptOffsets:
+            print(count)
+            print(i)
+            count = count + 1
+
         if f.tell() % 0x10 != 0:
             f.seek(0x10 - (f.tell() % 0x10), 1)
         for i in range(stringCount):
@@ -560,7 +567,11 @@ class MscFile:
             else:
                 end = endOfScripts
             newScript = MscScript()
-            newScript.name = 'func_%i' % i
+            #Change this for stage BABB's
+            if i == 0:
+                newScript.name = 'main'
+            else:
+                newScript.name = 'func_%i' % i
             newScript.read(f, start, end)
             self.scripts.append(newScript)
         return self
