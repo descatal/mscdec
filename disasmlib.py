@@ -80,7 +80,7 @@ def emuScript(script, startIndex, stack, passCount, endPosition=None, depth=0):
                     popped.append(stack.pop())
             except:
                 pass
-
+            
             #First pass
             if passCount == 0:
                 #if the command is a function call
@@ -96,10 +96,10 @@ def emuScript(script, startIndex, stack, passCount, endPosition=None, depth=0):
                         updateScriptReference(popped, 0, scriptName)
                     elif script[i].parameters[1] == 3:
                         updateScriptReference(popped, 0, scriptName)
+                    #elif script[i].parameters[1] == 0x29:
+                        #updateScriptReference(popped, 1, scriptName)
                     elif script[i].parameters[1] == 0x29:
-                        updateScriptReference(popped, 1, scriptName)
-                    elif script[i].parameters[1] == 0x29:
-                        updateScriptReference(popped, 2, scriptName)
+                        updateScriptReference(popped, 0, scriptName)
                 #If gv16 flag is enabled and it is setting GlobalVar16
                 if script[i].command == 0x1C and script[i].parameters[0] == 0x1: #and gvIsOffset[script[i].parameters[1]]:
                     updateScriptReference(popped, 0, scriptName)
