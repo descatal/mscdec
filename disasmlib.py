@@ -60,7 +60,7 @@ def updateScriptReference(popped, index, scriptName):
 def emuScript(script, startIndex, stack, passCount, endPosition=None, depth=0):
     global clearedPaths,scriptCalledVars, mscFile
     
-    if depth > 500:
+    if depth > 1000:
         return False
     
     scriptName = scriptNames[script.bounds[0]]
@@ -92,6 +92,7 @@ def emuScript(script, startIndex, stack, passCount, endPosition=None, depth=0):
                         popped[-1].parameters[0] = mscFile.strings[popped[-1].parameters[0]]
                 #if the command in a sys call
                 if script[i].command == 0x2d:
+                    #script[i].parameters[1] = sys number
                     if script[i].parameters[1] == 0:
                         updateScriptReference(popped, 0, scriptName)
                     elif script[i].parameters[1] == 3:
@@ -99,6 +100,9 @@ def emuScript(script, startIndex, stack, passCount, endPosition=None, depth=0):
                     #elif script[i].parameters[1] == 0x29:
                         #updateScriptReference(popped, 1, scriptName)
                     elif script[i].parameters[1] == 0x29:
+                        updateScriptReference(popped, 0, scriptName)
+                    # aded sys_2D reference finding
+                    elif script[i].parameters[1] == 0x2D:
                         updateScriptReference(popped, 0, scriptName)
                 #If gv16 flag is enabled and it is setting GlobalVar16
                 if script[i].command == 0x1C and script[i].parameters[0] == 0x1: #and gvIsOffset[script[i].parameters[1]]:
@@ -217,7 +221,7 @@ def disasm(fname):
     for i,script in enumerate(mscFile):
         clearedPaths = []
         emuScript(script, 0, [], 2)
-        pickTypes(script)
+        #pickTypes(script)
 
         jumpPositions = {}
         for cmd in script:

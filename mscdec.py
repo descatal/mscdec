@@ -297,9 +297,14 @@ def getArgs(argc):
         index -= 1
         thisIndex = index
         d = decompileCmd(currentFunc[index])
+
         if type(d) == list:
-            other = d[:-1] + other
-            d = d[-1]
+            if len(d) != 0:
+                other = d[:-1] + other
+                d = d[-1]
+            else:
+                print("aaa")
+
         if ((type(currentFunc[thisIndex]) in [Command, FunctionCallGroup, IfElseIntermediate]) and currentFunc[thisIndex].pushBit) or type(currentFunc[thisIndex]) == Cast:
             args.append(d)
         else:
